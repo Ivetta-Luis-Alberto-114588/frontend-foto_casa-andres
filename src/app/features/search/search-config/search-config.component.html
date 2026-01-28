@@ -1,0 +1,71 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Configuraciones de Búsqueda</h5>
+  </div>
+  <div class="card-body">
+    <div *ngIf="configs.length === 0" class="alert alert-info">
+      No hay configuraciones guardadas. Cree una nueva configuración arriba.
+    </div>
+
+    <div *ngIf="configs.length > 0" class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th scope="col">URL</th>
+            <th scope="col">Búsqueda</th>
+            <th scope="col">Email</th>
+            <th scope="col">Frecuencia</th>
+            <th scope="col">Última Ejecución</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let config of configs">
+            <td>
+              <a [href]="config.url" target="_blank" class="text-truncate d-inline-block" style="max-width: 200px;">
+                {{ config.url }}
+              </a>
+            </td>
+            <td>{{ config.searchTerm }}</td>
+            <td>{{ config.email }}</td>
+            <td>{{ getFrequencyLabel(config.frequency) }}</td>
+            <td>{{ formatDate(config.lastExecuted) }}</td>
+            <td>
+              <span class="badge" [ngClass]="getStatusBadgeClass(config.active)">
+                {{ getStatusLabel(config.active) }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group btn-group-sm" role="group">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="toggleActive(config.id!)"
+                  [title]="config.active ? 'Desactivar' : 'Activar'">
+                  <span *ngIf="config.active">⏸</span>
+                  <span *ngIf="!config.active">▶</span>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-success"
+                  (click)="executeNow(config.id!)"
+                  [disabled]="!config.active"
+                  title="Ejecutar ahora">
+                  🔄
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger"
+                  (click)="deleteConfig(config.id!)"
+                  title="Eliminar">
+                  🗑
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Nueva Configuración de Búsqueda</h5>
+  </div>
+  <div class="card-body">
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ errorMessage }}
+      <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
+    </div>
+
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="url" class="form-label">Portal Inmobiliario</label>
+        <input
+          type="url"
+          class="form-control"
+          [class.is-invalid]="submitted && f['url'].errors"
+          id="url"
+          formControlName="url"
+          readonly>
+        <div class="form-text">Fotocasa - Búsqueda de viviendas en venta</div>
+        <div *ngIf="submitted && f['url'].errors" class="invalid-feedback">
+          <div *ngIf="f['url'].errors['required']">La URL es requerida</div>
+          <div *ngIf="f['url'].errors['pattern']">Ingrese una URL válida (debe comenzar con http:// o https://)</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="searchTerm" class="form-label">Ciudad o Localidad</label>
+        <input
+          type="text"
+          class="form-control"
+          [class.is-invalid]="submitted && f['searchTerm'].errors"
+          id="searchTerm"
+          formControlName="searchTerm"
+          placeholder="Ej: Mataro, Cabrils, Barcelona">
+        <div class="form-text">El buscador encontrará viviendas en esta localidad</div>
+        <div *ngIf="submitted && f['searchTerm'].errors" class="invalid-feedback">
+          <div *ngIf="f['searchTerm'].errors['required']">La ciudad/localidad es requerida</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="priceMax" class="form-label">Precio Máximo (opcional)</label>
+        <div class="input-group">
+          <span class="input-group-text">Hasta</span>
+          <input
+            type="number"
+            class="form-control"
+            [class.is-invalid]="submitted && f['priceMax'].errors"
+            id="priceMax"
+            formControlName="priceMax"
+            placeholder="Sin límite"
+            min="0">
+          <span class="input-group-text">€</span>
+        </div>
+        <div class="form-text">Dejar vacío para ver todas las viviendas sin filtro de precio</div>
+        <div *ngIf="submitted && f['priceMax'].errors" class="invalid-feedback">
+          <div *ngIf="f['priceMax'].errors['min']">El precio no puede ser negativo</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="browser" class="form-label">Navegador</label>
+        <select
+          class="form-select"
+          [class.is-invalid]="submitted && f['browser'].errors"
+          id="browser"
+          formControlName="browser">
+          <option value="chromium">Chromium (por defecto)</option>
+          <option value="brave">Brave</option>
+        </select>
+        <div *ngIf="submitted && f['browser'].errors" class="invalid-feedback">
+          <div *ngIf="f['browser'].errors['required']">Seleccione un navegador</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo Electrónico</label>
+        <input
+          type="email"
+          class="form-control"
+          [class.is-invalid]="submitted && f['email'].errors"
+          id="email"
+          formControlName="email"
+          placeholder="correo@ejemplo.com">
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">El email es requerido</div>
+          <div *ngIf="f['email'].errors['email']">Ingrese un email válido</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="frequency" class="form-label">Frecuencia de Envío</label>
+        <select
+          class="form-select"
+          [class.is-invalid]="submitted && f['frequency'].errors"
+          id="frequency"
+          formControlName="frequency">
+          <option value="daily">Diario</option>
+          <option value="weekly">Semanal</option>
+          <option value="monthly">Mensual</option>
+        </select>
+        <div *ngIf="submitted && f['frequency'].errors" class="invalid-feedback">
+          <div *ngIf="f['frequency'].errors['required']">Seleccione una frecuencia</div>
+        </div>
+      </div>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary">Guardar Configuración</button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
